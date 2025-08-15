@@ -216,7 +216,7 @@ public class Player {
         return enemies.getFirst();
     }
 
-    public boolean Attack(Enemy target) {
+    public boolean AttackEnemy(Enemy target) {
         return target.HarmEnemy(getDamage());
     }
 
