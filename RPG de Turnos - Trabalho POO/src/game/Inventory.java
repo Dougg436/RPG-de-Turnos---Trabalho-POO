@@ -1,0 +1,119 @@
+package game;
+
+import game.Items.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
+
+public class Inventory {
+    HashMap<Item, Integer> inv = new HashMap<>();
+    Weapon weapon;
+    Armor armor;
+    Artifact artifact;
+
+
+    public void DefineInv(){
+        weapon = DataBase.BARE_HANDS;
+        armor = DataBase.DIRTY_CLOTHES;
+        artifact = DataBase.FLUTE;
+    }
+
+    public void ShowInventory() {
+        System.out.println("======/Equipado/======" +
+                "\nArma: " + weapon.getName() +
+                "\nArmadura: " + armor.getName() +
+                "\nArtefato: " + artifact.getName());
+
+        List<Item> keys = new ArrayList<>(inv.keySet());
+        for (int i = 0; i < keys.size(); i++) {
+            Item it = keys.get(i);
+            System.out.println(i + " - " + it.getName() + " x" + inv.get(it));
+        }
+    }
+
+    public Item PickItemByIndex(int index) {
+        List<Item> keys = new ArrayList<>(inv.keySet());
+        if (index >= 0 && index < keys.size()) {
+            return keys.get(index);
+        }
+        return null;
+    }
+
+    public void MenuGeneral() {
+        Scanner sc = new Scanner(System.in);
+        int opt = -1;
+        while (opt != 0) {
+            System.out.println("0 - Sair\n" +
+                    "1 - Equipar Item\n" +
+                    "2 - Descartar Item\n" +
+                    "3 - Ver Inventário");
+            opt = sc.nextInt();
+            switch (opt) {
+                case 1:
+                    ShowInventory();
+                    int i = sc.nextInt();
+
+                    Item chosen1 = PickItemByIndex(i);
+                    if (chosen1 != null) {
+                        EquipItem(chosen1);
+                        inv.remove(chosen1);
+                    } else System.out.println("Índice inválido!");
+                    break;
+                case 2:
+                    ShowInventory();
+                    int j = sc.nextInt();
+
+                    Item chosen2 = PickItemByIndex(j);
+                    if (chosen2 != null) {
+                        DiscardItem(chosen2);
+                    }
+                    break;
+                case 3:
+                    ShowInventory();
+                    break;
+            }
+        }
+    }
+
+    public void EquipItem(Item item) {
+        if (item.equals(weapon) || item.equals(armor) || item.equals(artifact)) {
+            System.out.println("Item já equipado!");
+            return;
+        }
+        switch(item.getType()) {
+            case "Weapon":
+                String oldWeapon = weapon.getName();
+                inv.put(weapon, inv.getOrDefault(weapon, 0) + 1);
+                weapon = (Weapon) item;
+                System.out.println("Arma: " + oldWeapon + " --> " + weapon.getName());
+                break;
+            case "Armor":
+                String oldArmor = armor.getName();
+                inv.put(armor, inv.getOrDefault(armor, 0) + 1);
+                armor = (Armor) item;
+                System.out.println("Arma: " + oldArmor + " --> " + armor.getName());
+                break;
+            case "Artifact":
+                String oldArtifact = artifact.getName();
+                inv.put(artifact, inv.getOrDefault(artifact, 0) + 1);
+                artifact = (Artifact) item;
+                System.out.println("Arma: " + oldArtifact + " --> " + artifact.getName());
+                break;
+            default:
+                System.out.println("Este item não pode ser equipado!");
+        }
+    }
+
+    public void ReceiveItem(Item item, int qnt) {
+        inv.put(item, inv.getOrDefault(item, 0) + qnt);
+        System.out.println("Recebeu: " + qnt + "x " + item.getName());
+    }
+
+    public void DiscardItem(Item item) {
+        inv.remove(item);
+        System.out.println("Descartou: " + item.getName());
+    }
+
+}
