@@ -162,7 +162,7 @@ public class Player {
             case 1:
                 Enemy target = ChooseEnemy(enemies);
                 if (target != null) {
-                    if (Attack(target)) {
+                    if (AttackEnemy(target)) {
                         System.out.println(target.getName() + " foi derrotado!");
                         enemies.remove(target);
                     }
