@@ -63,12 +63,16 @@ public class Inventory {
                     break;
                 case 2:
                     ShowInventory();
+                    int qnt = 1;
                     int j = sc.nextInt();
-
                     Item chosen2 = PickItemByIndex(j);
-                    if (chosen2 != null) {
-                        DiscardItem(chosen2);
+                    if (inv.get(chosen2) > 1) {
+                        System.out.println("Quantos?");
+                        qnt = sc.nextInt();
                     }
+                    if (chosen2 != null) {
+                        DiscardItem(chosen2, qnt);
+                    } else System.out.println("Índice inválido!");
                     break;
                 case 3:
                     ShowInventory();
@@ -111,9 +115,11 @@ public class Inventory {
         System.out.println("Recebeu: " + qnt + "x " + item.getName());
     }
 
-    public void DiscardItem(Item item) {
-        inv.remove(item);
-        System.out.println("Descartou: " + item.getName());
+    public void DiscardItem(Item item, int qnt) {
+        int currentqnt = inv.get(item);
+        if (qnt >= currentqnt) inv.remove(item);
+        else inv.put(item, currentqnt - qnt);
+        System.out.println("Descartou: " + qnt + "x " + item.getName());
     }
 
 }

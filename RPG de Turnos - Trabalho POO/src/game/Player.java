@@ -20,8 +20,16 @@ public class Player {
     private int honor;           // Honra (EXP)
     private int defense;         // Defesa
     List<StatusEffect> effects = new ArrayList<>();
+    List<Skill> skills = new ArrayList<>();
     Inventory inventory = new Inventory();
     Scanner sc = new Scanner(System.in);
+
+    enum Location {
+        VILLAGE,
+        DUNGEON,
+    }
+
+    private Location location;
 
 
     public void ShowStats() {
@@ -124,8 +132,6 @@ public class Player {
         effects.removeAll(ended);
     }
 
-
-
     public void CheckLevel() {
         if (honor >= level*5){
             while (honor >= level*5) {
@@ -144,8 +150,6 @@ public class Player {
             }
         }
     }
-
-
 
     public void TakeTurn(List<Enemy> enemies) {
         System.out.println("Seu Turno" +
@@ -168,14 +172,20 @@ public class Player {
                     }
                 }
                 break;
+            case 2:
+                for (int i = 0; i < skills.size(); i++) {
+                    Skill sk = skills.get(i);
+                    System.out.println(i + " - " + sk.getName());
+                }
+                break;
             case 3:
                 List<Item> keys = new ArrayList<>(inventory.inv.keySet());
                 for (int i = 0; i < keys.size(); i++) {
                     Item it = keys.get(i);
                     System.out.println(i + " - " + it.getName() + " x" + inventory.inv.get(it));
                 }
-                int choosed = sc.nextInt();
-                if (keys.get(choosed) instanceof CombatItem combatitem) {
+                int chosen = sc.nextInt();
+                if (keys.get(chosen) instanceof CombatItem combatitem) {
                     if (combatitem.getUtility() == CombatItem.Utility.OFFENSIVE) {
                         combatitem.useItem(this, ChooseEnemy(enemies));
                         break;
@@ -185,8 +195,8 @@ public class Player {
                         break;
                     }
                 }
-                if (keys.get(choosed) instanceof Weapon || keys.get(choosed) instanceof Armor || keys.get(choosed) instanceof Artifact){
-                    inventory.EquipItem(keys.get(choosed));
+                if (keys.get(chosen) instanceof Weapon || keys.get(chosen) instanceof Armor || keys.get(chosen) instanceof Artifact){
+                    inventory.EquipItem(keys.get(chosen));
                 }
                 break;
             case 4:
@@ -223,6 +233,7 @@ public class Player {
     // <editor-fold desc="Get e Set">
     public void GameOver(){
         System.out.println("Game Over!");
+        location = Location.VILLAGE;
     }
 
     public String getName() {

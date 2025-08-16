@@ -31,6 +31,7 @@ public class DataBase {
     public static StatusEffect HORROR = new StatusEffect(StatusEffect.Type.HORROR, 3, 1);
 
     // Habilidades
-    public static Skill IMOLAR = new Skill("Imolar", "mind", 2, 4, Skill.SkillType.APPLY_EFFECT);
+    public static Skill IMOLAR = new Skill("Imolar", "mind", 3, 4, Skill.SkillType.APPLY_EFFECT);
+    public static Skill REGENERAR = new Skill("Regenerar", "mind", 3, 5, Skill.SkillType.HEAL);
 
 }

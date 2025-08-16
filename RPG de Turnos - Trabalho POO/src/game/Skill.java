@@ -9,17 +9,15 @@ public class Skill {
     private String name;
     private int cost;
     private String costType;
-    private int intensity;
+    private final int intensity;
 
-
-
-    enum SkillType {
+    public enum SkillType {
         DAMAGE,
         APPLY_EFFECT,
         HEAL,
         REMOVE_EFFECT,
 
-        DAMAGE_ALL,
+        DAMAGE_ALL
     }
 
     public SkillType skillType;
@@ -55,6 +53,7 @@ public class Skill {
                 break;
             case APPLY_EFFECT:
                 Enemy e2 = player.ChooseEnemy(enemies);
+                e2.HarmEnemy(intensity);
                 e2.ApplyEffect(effectType);
                 break;
             case REMOVE_EFFECT:
@@ -64,5 +63,14 @@ public class Skill {
             case DAMAGE_ALL:
                 for (Enemy e : enemies) e.HarmEnemy(intensity);
         }
+        player.SpendSecPoint(costType, cost);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public SkillType getSkillType() {
+        return skillType;
     }
 }
