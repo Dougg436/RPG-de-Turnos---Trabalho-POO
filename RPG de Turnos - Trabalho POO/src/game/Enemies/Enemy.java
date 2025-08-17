@@ -44,19 +44,19 @@ public abstract class Enemy {
 
      */
 
-    public boolean HarmEnemy(int damage) {
+    public void HarmEnemy(int damage) {
         int finalDamage = Math.max(damage - defense, 0);
         healthPoints = Math.max(healthPoints - finalDamage, 0);
         System.out.println(name + " recebe /" + finalDamage + "/ de dano!");
-        return isDead();
     }
 
     public boolean isDead() {
         return healthPoints <= 0;
     }
 
-    public void ApplyEffect(StatusEffect effect) {
+    public void ApplyEffect(StatusEffect effect, int damage) {
         effects.add(effect);
+        HarmEnemy(damage);
         System.out.println(name + " " + effect.getType().getMessage());
     }
 
@@ -72,7 +72,7 @@ public abstract class Enemy {
             case SPECIAL:
                 int harm2 = (this.damage*2) - target.getDefense();
                 target.HarmPlayer(harm2);
-                System.out.println(name + " atacou " + target.getName() + "com Ataque Especial! [/" + harm2 + "/ de Dano]");
+                System.out.println(name + " atacou " + target.getName() + " com Ataque Especial! [/" + harm2 + "/ de Dano]");
                 break;
         }
     }
@@ -96,6 +96,10 @@ public abstract class Enemy {
 
     public int getHealthPoints() {
         return healthPoints;
+    }
+
+    public int getMaxHealthPoints() {
+        return maxHealthPoints;
     }
 
     public int getHonorgained() {

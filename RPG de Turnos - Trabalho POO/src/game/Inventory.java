@@ -18,6 +18,7 @@ public class Inventory {
         weapon = DataBase.BARE_HANDS;
         armor = DataBase.DIRTY_CLOTHES;
         artifact = DataBase.FLUTE;
+        inv.put(DataBase.BANDAGE, 3);
     }
 
     public void ShowInventory() {

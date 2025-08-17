@@ -1,15 +1,27 @@
 package game;
 
-import game.Items.DataBase;
+import game.Enemies.Enemy;
+import game.Enemies.Monster;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        Inventory inventory = new Inventory();
-        Player user = new Player(5, 1, 1, sc.nextLine(), 1);
-        user.ApplyEffect(DataBase.BLEED);
+
+        CombatControl combat = new CombatControl();
+        Player user = new Player(45, 45, 45, sc.nextLine(), 1);
+        user.inventory.DefineInv();
+        user.skills.add(DataBase.IMOLAR);
+
+        List<Enemy> enemies = new ArrayList<>();
+        Monster e1 = new Monster();
+        Monster e2 = new Monster();
+        enemies.add(e1);
+        enemies.add(e2);
+        combat.PlayCombat(enemies, user, false);
 
 
 

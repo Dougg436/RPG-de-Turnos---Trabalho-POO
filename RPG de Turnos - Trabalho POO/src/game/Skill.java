@@ -48,13 +48,10 @@ public class Skill {
                 player.HealPlayer(intensity);
                 break;
             case DAMAGE:
-                Enemy e1 = player.ChooseEnemy(enemies);
-                e1.HarmEnemy(intensity);
+                player.ChooseEnemy(enemies).HarmEnemy(intensity);
                 break;
             case APPLY_EFFECT:
-                Enemy e2 = player.ChooseEnemy(enemies);
-                e2.HarmEnemy(intensity);
-                e2.ApplyEffect(effectType);
+                player.ChooseEnemy(enemies).ApplyEffect(effectType, intensity);
                 break;
             case REMOVE_EFFECT:
                 player.RemoveEffect(effectType.getType());
@@ -62,6 +59,7 @@ public class Skill {
             // Armas
             case DAMAGE_ALL:
                 for (Enemy e : enemies) e.HarmEnemy(intensity);
+                break;
         }
         player.SpendSecPoint(costType, cost);
     }

@@ -58,7 +58,6 @@ public class Player {
     public void HarmPlayer(int damage) {
         int finalDamage = Math.max(damage - defense, 0);
         healthPoints = Math.max(healthPoints - finalDamage, 0);
-        System.out.println(name + " recebe /" + finalDamage + "/ de dano!");
         if (healthPoints == 0) {
             GameOver();
         }
@@ -152,33 +151,34 @@ public class Player {
     }
 
     public void TakeTurn(List<Enemy> enemies) {
-        System.out.println("Seu Turno" +
-                "\nSaúde: " + healthPoints + "/" + maxHealthPoints +
+        for (Enemy e: enemies) System.out.println("[" + e.getName()+ " (" + e.getHealthPoints() + "/" + e.getMaxHealthPoints() + ")]");
+        System.out.println("Saúde: " + healthPoints + "/" + maxHealthPoints +
                 "\nStamina: " + stamina + "/" + maxStamina +
-                "\nMente: " + mind + "/" + maxMind +
-                "\n------------------------------" +
+                "\nMente: " + mind + "/" + maxMind);
+        Sleep(250);
+        System.out.println("------------------------------" +
                 "\n1 - Atacar" +
                 "\n2 - Habilidade" +
                 "\n3 - Item" +
                 "\n4 - Descansar");
+
         int opt = sc.nextInt();
         switch(opt) {
             case 1:
                 Enemy target = ChooseEnemy(enemies);
-                if (target != null) {
-                    if (AttackEnemy(target)) {
-                        System.out.println(target.getName() + " foi derrotado!");
-                        enemies.remove(target);
-                    }
-                }
+                if (target != null) {AttackEnemy(target);}
+
                 break;
             case 2:
                 for (int i = 0; i < skills.size(); i++) {
                     Skill sk = skills.get(i);
-                    System.out.println(i + " - " + sk.getName());
+                    System.out.println((i+1) + " - " + sk.getName());
+
                 }
+                skills.get(sc.nextInt()-1).useSkill(this, enemies);
                 break;
             case 3:
+                if (inventory.inv.isEmpty()) break;
                 List<Item> keys = new ArrayList<>(inventory.inv.keySet());
                 for (int i = 0; i < keys.size(); i++) {
                     Item it = keys.get(i);
@@ -226,8 +226,16 @@ public class Player {
         return enemies.getFirst();
     }
 
-    public boolean AttackEnemy(Enemy target) {
-        return target.HarmEnemy(getDamage());
+    public void AttackEnemy(Enemy target) {
+        target.HarmEnemy(getDamage());
+    }
+
+    public void Sleep(int mili) {
+        try {
+            Thread.sleep(mili); // 2000 milissegundos = 2 segundos
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
     }
 
     // <editor-fold desc="Get e Set">
