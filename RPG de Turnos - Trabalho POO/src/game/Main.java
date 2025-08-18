@@ -1,7 +1,7 @@
 package game;
 
 import game.Enemies.Enemy;
-import game.Enemies.Monster;
+import game.Enemies.Oni;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +17,8 @@ public class Main {
         user.skills.add(DataBase.IMOLAR);
 
         List<Enemy> enemies = new ArrayList<>();
-        Monster e1 = new Monster();
-        Monster e2 = new Monster();
+        Oni e1 = new Oni();
+        Oni e2 = new Oni();
         enemies.add(e1);
         enemies.add(e2);
         combat.PlayCombat(enemies, user, false);

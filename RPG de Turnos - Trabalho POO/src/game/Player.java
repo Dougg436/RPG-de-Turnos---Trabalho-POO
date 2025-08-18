@@ -200,11 +200,9 @@ public class Player {
                 }
                 break;
             case 4:
-                RecoverSecPoint("stamina", 3);
-                RecoverSecPoint("mind", 3);
+                if (stamina < maxStamina) RecoverSecPoint("stamina", Math.max(3, maxStamina));
+                if (mind < maxMind) RecoverSecPoint("mind", Math.max(3, maxMind));
                 HealPlayer(4);
-                System.out.println("Mente e Stamina recuperados (+3)\n" +
-                        "Saúde recuperada (+4)");
         }
 
     }

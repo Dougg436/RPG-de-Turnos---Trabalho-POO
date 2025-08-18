@@ -28,21 +28,6 @@ public abstract class Enemy {
         this.damage = damage;
         this.defense = defense;
     }
-/*
-    public void Attack(Player target) {
-        int harm = this.damage - target.getDefense();
-        target.HarmPlayer(harm);
-    }
-
-    public void EspecialAttack(Player target) {
-        int harm = this.damage - target.getDefense();
-        target.HarmPlayer(harm);
-    }
-    public int PickAttack(int numAttacks) {
-        return random.nextInt(numAttacks-1);
-    }
-
-     */
 
     public void HarmEnemy(int damage) {
         int finalDamage = Math.max(damage - defense, 0);
@@ -104,5 +89,9 @@ public abstract class Enemy {
 
     public int getHonorgained() {
         return honorgained;
+    }
+
+    public int getDamage() {
+        return damage;
     }
 }
