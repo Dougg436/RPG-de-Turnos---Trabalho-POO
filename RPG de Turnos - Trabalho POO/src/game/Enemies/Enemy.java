@@ -12,7 +12,7 @@ public abstract class Enemy {
     private final String name;
     private int damage;
     private int defense;
-    private int honorgained;
+    private int XPgained;
     private List<StatusEffect> effects = new ArrayList<>();
     private static final Random random = new Random();
 
@@ -21,16 +21,22 @@ public abstract class Enemy {
         SPECIAL
     }
 
-    public Enemy(int maxHealthPoints, String name, int damage, int defense) {
+    public Enemy(int maxHealthPoints, String name, int damage, int defense, int xp) {
         this.maxHealthPoints = maxHealthPoints;
         this.healthPoints = maxHealthPoints;
         this.name = name;
         this.damage = damage;
         this.defense = defense;
+        this.XPgained = xp;
     }
 
     public void HarmEnemy(int damage) {
         int finalDamage = Math.max(damage - defense, 0);
+        healthPoints = Math.max(healthPoints - finalDamage, 0);
+        System.out.println(name + " recebe /" + finalDamage + "/ de dano!");
+    }
+    public void HarmEnemyPiercing(int damage) {
+        int finalDamage = Math.max(damage, 0);
         healthPoints = Math.max(healthPoints - finalDamage, 0);
         System.out.println(name + " recebe /" + finalDamage + "/ de dano!");
     }
@@ -50,12 +56,12 @@ public abstract class Enemy {
 
         switch(choice) {
             case ATTACK:
-                int harm1 = this.damage - target.getDefense();
+                int harm1 = this.damage;
                 target.HarmPlayer(harm1);
                 System.out.println(name + " atacou " + target.getName() + " [/" + harm1 + "/ de Dano]");
                 break;
             case SPECIAL:
-                int harm2 = (this.damage*2) - target.getDefense();
+                int harm2 = (this.damage*2);
                 target.HarmPlayer(harm2);
                 System.out.println(name + " atacou " + target.getName() + " com Ataque Especial! [/" + harm2 + "/ de Dano]");
                 break;
@@ -87,8 +93,8 @@ public abstract class Enemy {
         return maxHealthPoints;
     }
 
-    public int getHonorgained() {
-        return honorgained;
+    public int getXPgained() {
+        return XPgained;
     }
 
     public int getDamage() {

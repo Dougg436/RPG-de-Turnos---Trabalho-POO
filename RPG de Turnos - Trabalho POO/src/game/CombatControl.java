@@ -14,12 +14,13 @@ public class CombatControl {
         System.out.println("Combate!");
         int xp = 1;
         for (Enemy e : enemies) {
-            xp += e.getHonorgained();
+            xp += e.getXPgained();
         }
-        while (!enemies.isEmpty()) {
+        while (!enemies.isEmpty() || player.getHealthPoints() == 0) {
             Sleep(2000);
             System.out.println("-{Seu Turno}-");
             player.ProcessEffects();
+            player.GainSecs();
             player.TakeTurn(enemies);
             enemies.removeIf(Enemy::isDead);
             Sleep(1500);
@@ -33,14 +34,19 @@ public class CombatControl {
             }
             enemies.removeIf(Enemy::isDead);
         }
+        if (player.getHealthPoints() == 0) {
+            player.GameOver();
+            return;
+        }
 
         System.out.println("Vitória! \n" +
-                "(+" + xp + " de Honra)");
+                "(+" + xp + " de XP!)");
+        player.gainXP(xp);
     }
 
     public void Sleep(int mili) {
         try {
-            Thread.sleep(mili); // 2000 milissegundos = 2 segundos
+            Thread.sleep(mili); // 1000 milissegundos = 1 segundos
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }

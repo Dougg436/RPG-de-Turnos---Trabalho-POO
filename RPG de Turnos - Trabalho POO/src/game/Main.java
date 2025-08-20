@@ -14,7 +14,7 @@ public class Main {
         CombatControl combat = new CombatControl();
         Player user = new Player(45, 45, 45, sc.nextLine(), 1);
         user.inventory.DefineInv();
-        user.skills.add(DataBase.IMOLAR);
+        user.inventory.MenuGeneral(user);
 
         List<Enemy> enemies = new ArrayList<>();
         Oni e1 = new Oni();

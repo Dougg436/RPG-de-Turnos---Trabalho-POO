@@ -14,10 +14,12 @@ public class Player {
     private int maxHealthPoints; // Max. Saúde
     private int stamina;         // Stamina
     private int maxStamina;      // Max. Stamina
+    private int staminaGain;
     private int mind;            // Mente
     private int maxMind;         // Max. Mente
+    private int mindGain;
     private int level;           // Nível
-    private int honor;           // Honra (EXP)
+    private int XP;           // Honra (EXP)
     private int defense;         // Defesa
     List<StatusEffect> effects = new ArrayList<>();
     List<Skill> skills = new ArrayList<>();
@@ -36,7 +38,7 @@ public class Player {
         System.out.println(
                 "=====|{ " + name.toUpperCase() +" }|=====\n" +
                         "Nível: " + level + "\n" +
-                        "Honra: " + honor + "\n\n" +
+                        "Honra: " + XP + "\n\n" +
                         "Saúde: " + healthPoints + " / " + maxHealthPoints + "\n" +
                         "Vigor: " + stamina + " / " + maxStamina + "\n" +
                         "Mente: " + mind + " / " + maxMind + "\n" +
@@ -58,9 +60,11 @@ public class Player {
     public void HarmPlayer(int damage) {
         int finalDamage = Math.max(damage - defense, 0);
         healthPoints = Math.max(healthPoints - finalDamage, 0);
-        if (healthPoints == 0) {
-            GameOver();
-        }
+    }
+
+    public void HarmPlayerPiercing(int damage) {
+        int finalDamage = Math.max(damage, 0);
+        healthPoints = Math.max(healthPoints - finalDamage, 0);
     }
 
     public void HealPlayer(int heal) {
@@ -92,23 +96,27 @@ public class Player {
         }
     }
 
-    public void RecoverSecPoint(String sec, int qnt) {
+    public void RecoverSecPoint(String sec, int qnt, boolean quiet) {
         switch(sec){
             case "stamina":
                 int oldSP = stamina;
                 stamina = Math.min(stamina + qnt, maxStamina);
                 int SPgained = stamina - oldSP;
-                if (SPgained > 0) {
-                    System.out.println(name + " recupera (+" + SPgained + ") de Stamina");
-                } else System.out.println(name + " Stamina já cheia!");
+                if (!quiet) {
+                    if (SPgained > 0) {
+                        System.out.println(name + " recupera (+" + SPgained + ") de Stamina");
+                    } else System.out.println(name + " Stamina já cheia!");
+                }
                 break;
             case "mind":
                 int oldMP = mind;
                 mind = Math.min(mind + qnt, maxMind);
                 int MPgained = mind - oldMP;
-                if (MPgained > 0) {
-                    System.out.println(name + " recupera (+" + MPgained + ") de Mente");
-                } else System.out.println(name + " Mente já cheia!");
+                if (!quiet) {
+                    if (MPgained > 0) {
+                        System.out.println(name + " recupera (+" + MPgained + ") de Mente");
+                    } else System.out.println(name + " Mente já cheia!");
+                }
                 break;
         }
     }
@@ -132,9 +140,9 @@ public class Player {
     }
 
     public void CheckLevel() {
-        if (honor >= level*5){
-            while (honor >= level*5) {
-                honor -= level*5;
+        if (XP >= level*5){
+            while (XP >= level*5) {
+                XP -= level*5;
                 level += 1;
                 int oldHP = maxHealthPoints;
                 int oldSP = maxStamina;
@@ -196,13 +204,14 @@ public class Player {
                     }
                 }
                 if (keys.get(chosen) instanceof Weapon || keys.get(chosen) instanceof Armor || keys.get(chosen) instanceof Artifact){
-                    inventory.EquipItem(keys.get(chosen));
+                    inventory.EquipItem(keys.get(chosen), this);
                 }
                 break;
             case 4:
-                if (stamina < maxStamina) RecoverSecPoint("stamina", Math.max(3, maxStamina));
-                if (mind < maxMind) RecoverSecPoint("mind", Math.max(3, maxMind));
+                if (stamina < maxStamina) RecoverSecPoint("stamina", Math.max(3, maxStamina), true);
+                if (mind < maxMind) RecoverSecPoint("mind", Math.max(3, maxMind), true);
                 HealPlayer(4);
+                break;
         }
 
     }
@@ -230,10 +239,15 @@ public class Player {
 
     public void Sleep(int mili) {
         try {
-            Thread.sleep(mili); // 2000 milissegundos = 2 segundos
+            Thread.sleep(mili); // 1000 milissegundos = 1 segundos
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void GainSecs() {
+        RecoverSecPoint("mind", mindGain, true);
+        RecoverSecPoint("stamina", staminaGain, true);
     }
 
     // <editor-fold desc="Get e Set">
@@ -282,6 +296,14 @@ public class Player {
         this.maxStamina = maxStamina;
     }
 
+    public int getStaminaGain() {
+        return staminaGain;
+    }
+
+    public void setStaminaGain(int staminaGain) {
+        this.staminaGain = staminaGain;
+    }
+
     public int getMind() {
         return mind;
     }
@@ -298,6 +320,14 @@ public class Player {
         this.maxMind = maxMind;
     }
 
+    public int getMindGain() {
+        return mindGain;
+    }
+
+    public void setMindGain(int mindGain) {
+        this.mindGain = mindGain;
+    }
+
     public int getLevel() {
         return level;
     }
@@ -306,12 +336,12 @@ public class Player {
         this.level = level;
     }
 
-    public int getHonor() {
-        return honor;
+    public int getXP() {
+        return XP;
     }
 
-    public void setHonor(int honor) {
-        this.honor = honor;
+    public void gainXP(int XP) {
+        this.XP += XP;
     }
 
     public int getDefense() {
@@ -322,7 +352,11 @@ public class Player {
         this.defense = defense;
     }
 
-    public int getDamage() {return inventory.weapon.getDamage();}
+    public int getDamage() {
+        if (inventory.artifact.getEffectType() == Artifact.EffectType.INC_DAMAGE)
+            return inventory.weapon.getDamage() + inventory.artifact.getIntensity();
+        return inventory.weapon.getDamage();
+    }
     // </editor-fold>
 
 }

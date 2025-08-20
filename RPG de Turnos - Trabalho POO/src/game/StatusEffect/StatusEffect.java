@@ -36,7 +36,7 @@ public class StatusEffect {
             case BLEED:
             case POISON:
             case BURN:
-                target.HarmPlayer(intensity);
+                target.HarmPlayerPiercing(intensity);
                 break;
             case FROST:
                 System.out.println(target.getName() + " está congelado e não recupera Stamina!");
@@ -57,7 +57,7 @@ public class StatusEffect {
             case BLEED:
             case POISON:
             case BURN:
-                target.HarmEnemy(intensity);
+                target.HarmEnemyPiercing(intensity);
                 break;
             case FROST:
                 System.out.println(target.getName() + " está congelado e não recupera Stamina!");

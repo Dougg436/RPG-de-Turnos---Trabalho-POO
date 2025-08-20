@@ -4,6 +4,7 @@ import game.Enemies.Enemy;
 import game.StatusEffect.StatusEffect;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Skill {
     private String name;
@@ -62,6 +63,19 @@ public class Skill {
                 break;
         }
         player.SpendSecPoint(costType, cost);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Skill)) return false;
+        Skill skill = (Skill) o;
+        return Objects.equals(this.name, skill.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 
     public String getName() {

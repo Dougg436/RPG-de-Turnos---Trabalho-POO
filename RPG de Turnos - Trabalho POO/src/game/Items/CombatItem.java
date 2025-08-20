@@ -42,10 +42,10 @@ public class CombatItem extends Item{
                 e.HarmEnemy(effectValue);
                 break;
             case GIVE_MIND:
-                p.RecoverSecPoint("mind", effectValue);
+                p.RecoverSecPoint("mind", effectValue, false);
                 break;
             case GIVE_STAMINA:
-                p.RecoverSecPoint("stamina", effectValue);
+                p.RecoverSecPoint("stamina", effectValue, false);
                 break;
             case REMOVE_BLEED:
                 p.RemoveEffect(StatusEffect.Type.BLEED);

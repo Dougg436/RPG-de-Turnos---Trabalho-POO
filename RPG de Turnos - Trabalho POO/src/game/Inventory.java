@@ -19,6 +19,8 @@ public class Inventory {
         armor = DataBase.DIRTY_CLOTHES;
         artifact = DataBase.FLUTE;
         inv.put(DataBase.BANDAGE, 3);
+        inv.put(DataBase.KATANA, 1);
+
     }
 
     public void ShowInventory() {
@@ -30,7 +32,7 @@ public class Inventory {
         List<Item> keys = new ArrayList<>(inv.keySet());
         for (int i = 0; i < keys.size(); i++) {
             Item it = keys.get(i);
-            System.out.println(i + " - " + it.getName() + " x" + inv.get(it));
+            System.out.println((i+1) + " - " + it.getName() + " x" + inv.get(it));
         }
     }
 
@@ -42,7 +44,7 @@ public class Inventory {
         return null;
     }
 
-    public void MenuGeneral() {
+    public void MenuGeneral(Player player) {
         Scanner sc = new Scanner(System.in);
         int opt = -1;
         while (opt != 0) {
@@ -54,18 +56,18 @@ public class Inventory {
             switch (opt) {
                 case 1:
                     ShowInventory();
-                    int i = sc.nextInt();
+                    int i = sc.nextInt()-1;
 
                     Item chosen1 = PickItemByIndex(i);
                     if (chosen1 != null) {
-                        EquipItem(chosen1);
+                        EquipItem(chosen1, player);
                         inv.remove(chosen1);
                     } else System.out.println("Índice inválido!");
                     break;
                 case 2:
                     ShowInventory();
                     int qnt = 1;
-                    int j = sc.nextInt();
+                    int j = sc.nextInt()-1;
                     Item chosen2 = PickItemByIndex(j);
                     if (inv.get(chosen2) > 1) {
                         System.out.println("Quantos?");
@@ -82,29 +84,34 @@ public class Inventory {
         }
     }
 
-    public void EquipItem(Item item) {
+    public void EquipItem(Item item, Player player) {
         if (item.equals(weapon) || item.equals(armor) || item.equals(artifact)) {
             System.out.println("Item já equipado!");
             return;
         }
         switch(item.getType()) {
             case "Weapon":
-                String oldWeapon = weapon.getName();
-                inv.put(weapon, inv.getOrDefault(weapon, 0) + 1);
+                Weapon oldWeapon = weapon;
                 weapon = (Weapon) item;
-                System.out.println("Arma: " + oldWeapon + " --> " + weapon.getName());
+                inv.put(oldWeapon, inv.getOrDefault(oldWeapon, 0) + 1);
+                inv.remove(item);
+                if (oldWeapon.getWeaponSkill() != null) player.skills.remove(oldWeapon.getWeaponSkill());
+                if (weapon.getWeaponSkill() != null) player.skills.add(weapon.getWeaponSkill());
+                System.out.println("Arma: " + oldWeapon.getName() + " --> " + weapon.getName());
                 break;
             case "Armor":
                 String oldArmor = armor.getName();
                 inv.put(armor, inv.getOrDefault(armor, 0) + 1);
                 armor = (Armor) item;
-                System.out.println("Arma: " + oldArmor + " --> " + armor.getName());
+                inv.remove(item);
+                System.out.println("Armadura: " + oldArmor + " --> " + armor.getName());
                 break;
             case "Artifact":
                 String oldArtifact = artifact.getName();
                 inv.put(artifact, inv.getOrDefault(artifact, 0) + 1);
                 artifact = (Artifact) item;
-                System.out.println("Arma: " + oldArtifact + " --> " + artifact.getName());
+                inv.remove(item);
+                System.out.println("Artefato: " + oldArtifact + " --> " + artifact.getName());
                 break;
             default:
                 System.out.println("Este item não pode ser equipado!");

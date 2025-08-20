@@ -6,7 +6,7 @@ import java.util.Random;
 public class Oni extends Enemy{
     private static final Random random = new Random();
     public Oni() {
-        super(15, "Oni", 3, 1);
+        super(15, "Oni", 3, 1, 4);
     }
 
     enum Attacks {
@@ -17,21 +17,21 @@ public class Oni extends Enemy{
 
     @Override
     public void TakeTurn(Player target) {
-        Oni.Attacks choice = Oni.Attacks.values()[random.nextInt(Enemy.Attacks.values().length)];
+        Oni.Attacks choice = Oni.Attacks.values()[random.nextInt(Oni.Attacks.values().length)];
 
         switch(choice) {
             case ATTACK:
-                int harm1 = this.getDamage() - target.getDefense();
+                int harm1 = this.getDamage();
                 target.HarmPlayer(harm1);
                 System.out.println(this.getName() + " atacou " + target.getName() + " [/" + harm1 + "/ de Dano]");
                 break;
             case SPECIAL:
-                int harm2 = (this.getDamage()+(random.nextInt(1, 4))) - target.getDefense();
+                int harm2 = (this.getDamage()+(random.nextInt(1, 4)));
                 target.HarmPlayer(harm2);
                 System.out.println(this.getName() + " atacou " + target.getName() + " com Ataque Especial! [/" + harm2 + "/ de Dano]");
                 break;
             case CRUSH:
-                target.HarmPlayer(this.getDamage());
+                target.HarmPlayerPiercing(this.getDamage());
                 System.out.println(this.getName() + " atacou " + target.getName() + " com Esmagar! (Ignora Armadura) [/" + this.getDamage() + "/ de Dano]");
         }
     }
