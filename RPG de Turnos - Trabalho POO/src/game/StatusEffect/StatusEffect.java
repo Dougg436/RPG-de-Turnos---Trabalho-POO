@@ -74,5 +74,14 @@ public class StatusEffect {
     }
 
     public boolean IsEnded() {return duration <= 0;}
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public int getIntensity() {
+        return intensity;
+    }
+
     public Type getType() {return type;}
 }

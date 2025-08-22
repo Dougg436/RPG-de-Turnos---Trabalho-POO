@@ -13,7 +13,12 @@ public class Main {
 
         CombatControl combat = new CombatControl();
         Player user = new Player(45, 45, 45, sc.nextLine(), 1);
+        DungeonVillage dungeonVillage = new DungeonVillage();
         user.inventory.DefineInv();
+        dungeonVillage.NewDay();
+        dungeonVillage.Village(user, user.inventory);
+
+        /*
         user.inventory.MenuGeneral(user);
 
         List<Enemy> enemies = new ArrayList<>();
@@ -22,6 +27,7 @@ public class Main {
         enemies.add(e1);
         enemies.add(e2);
         combat.PlayCombat(enemies, user, false);
+         */
 
 
 

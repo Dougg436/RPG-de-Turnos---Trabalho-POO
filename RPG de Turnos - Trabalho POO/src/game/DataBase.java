@@ -22,7 +22,12 @@ public class DataBase {
 
     // Habilidades
     public static Skill IMOLAR = new Skill("Imolar", "mind", 3, 4, Skill.SkillType.APPLY_EFFECT, BURN);
+    public static Skill APODRECER = new Skill("Apodrecer", "mind", 3, 5, Skill.SkillType.APPLY_EFFECT, POISON);
     public static Skill REGENERAR = new Skill("Regenerar", "mind", 3, 5, Skill.SkillType.HEAL);
+    public static Skill COAGULAR = new Skill("Coagular", "mind", 3, 4, Skill.SkillType.REMOVE_EFFECT, POISON);
+    public static Skill CICATRIZAR = new Skill("Cicatrizar", "mind", 3, 5, Skill.SkillType.REMOVE_EFFECT, BLEED);
+    public static Skill ESQUECER = new Skill("Esquecer", "mind", 3, 5, Skill.SkillType.REMOVE_EFFECT, HORROR);
+
 
     public static Skill CORTE_AMPLO = new Skill("Corte Amplo", "stamina", 3, 3, Skill.SkillType.DAMAGE_ALL);
     public static Skill PARTIR = new Skill("Partir", "stamina", 3, 5, Skill.SkillType.APPLY_EFFECT, BLEED);

@@ -100,4 +100,8 @@ public abstract class Enemy {
     public int getDamage() {
         return damage;
     }
+
+    public List<StatusEffect> getEffects() {
+        return effects;
+    }
 }

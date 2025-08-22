@@ -13,13 +13,18 @@ public class Inventory {
     Armor armor;
     Artifact artifact;
 
+    private int money;
+
 
     public void DefineInv(){
         weapon = DataBase.BARE_HANDS;
         armor = DataBase.DIRTY_CLOTHES;
         artifact = DataBase.FLUTE;
+
         inv.put(DataBase.BANDAGE, 3);
         inv.put(DataBase.KATANA, 1);
+
+        money = 5;
 
     }
 
@@ -108,8 +113,10 @@ public class Inventory {
                 break;
             case "Artifact":
                 String oldArtifact = artifact.getName();
+                artifact.OnUnequip(player);
                 inv.put(artifact, inv.getOrDefault(artifact, 0) + 1);
                 artifact = (Artifact) item;
+                ((Artifact) item).OnEquip(player);
                 inv.remove(item);
                 System.out.println("Artefato: " + oldArtifact + " --> " + artifact.getName());
                 break;
@@ -130,4 +137,16 @@ public class Inventory {
         System.out.println("Descartou: " + qnt + "x " + item.getName());
     }
 
+    public int getMoney() {
+        return money;
+    }
+
+    public void SpendMoney(int amount) {
+        money = Math.max(money - amount, 0);
+    }
+
+    public void ReceiveMoney(int amount) {
+        money += amount;
+        System.out.println("Recebeu +" + amount + "Ryos!");
+    }
 }

@@ -87,6 +87,7 @@ public class Player {
                 }
                 System.out.println("Sem Stamina suficiente!");
                 return;
+
             case "mind":
                 if (mind >= qnt) {
                     mind -= qnt;
@@ -108,6 +109,7 @@ public class Player {
                     } else System.out.println(name + " Stamina já cheia!");
                 }
                 break;
+
             case "mind":
                 int oldMP = mind;
                 mind = Math.min(mind + qnt, maxMind);
@@ -136,6 +138,7 @@ public class Player {
             e.ApplyTurnEffect(this);
             if (e.IsEnded()) ended.add(e);
         }
+
         effects.removeAll(ended);
     }
 
@@ -144,12 +147,15 @@ public class Player {
             while (XP >= level*5) {
                 XP -= level*5;
                 level += 1;
+
                 int oldHP = maxHealthPoints;
                 int oldSP = maxStamina;
                 int oldMP = maxMind;
+
                 maxHealthPoints += 4;
                 maxStamina += 1;
                 maxMind += 1;
+
                 System.out.println("Level up! (" + level + ")\n" +
                         "Saúde: " + oldHP + " -> " + maxHealthPoints + "\n" +
                         "Stamina: " + oldSP + " -> " + maxStamina + "\n" +
@@ -185,6 +191,7 @@ public class Player {
                 }
                 skills.get(sc.nextInt()-1).useSkill(this, enemies);
                 break;
+
             case 3:
                 if (inventory.inv.isEmpty()) break;
                 List<Item> keys = new ArrayList<>(inventory.inv.keySet());
@@ -207,6 +214,7 @@ public class Player {
                     inventory.EquipItem(keys.get(chosen), this);
                 }
                 break;
+
             case 4:
                 if (stamina < maxStamina) RecoverSecPoint("stamina", Math.max(3, maxStamina), true);
                 if (mind < maxMind) RecoverSecPoint("mind", Math.max(3, maxMind), true);

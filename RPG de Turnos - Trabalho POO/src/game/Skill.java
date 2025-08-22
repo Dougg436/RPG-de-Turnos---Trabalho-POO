@@ -17,12 +17,16 @@ public class Skill {
         APPLY_EFFECT,
         HEAL,
         REMOVE_EFFECT,
+        TERMINATE,
 
-        DAMAGE_ALL
+        DAMAGE_ALL,
+        DEFEND,
+        PIERCING
+
     }
 
     public SkillType skillType;
-    private StatusEffect effectType;
+    private final StatusEffect effectType;
 
     public Skill(String name, String costType, int cost, int intensity, SkillType skillType) {
         this.name = name;
@@ -30,6 +34,7 @@ public class Skill {
         this.cost = cost;
         this.intensity = intensity;
         this.skillType = skillType;
+        this.effectType = null;
     }
 
     public Skill(String name, String costType, int cost, int intensity, SkillType skillType, StatusEffect effect) {
@@ -57,10 +62,31 @@ public class Skill {
             case REMOVE_EFFECT:
                 player.RemoveEffect(effectType.getType());
                 break;
+            case TERMINATE:
+                Enemy e1 = player.ChooseEnemy(enemies);
+                List<StatusEffect> ef = e1.getEffects();
+                int harm = 0;
+                for (StatusEffect effect : ef) {
+                    if (effect.getType() == StatusEffect.Type.BLEED ||
+                            effect.getType() == StatusEffect.Type.POISON ||
+                            effect.getType() == StatusEffect.Type.BURN) {
+                        harm += effect.getIntensity() * effect.getDuration();
+                    }
+                }
+                e1.HarmEnemy(harm);
+                break;
             // Armas
             case DAMAGE_ALL:
-                for (Enemy e : enemies) e.HarmEnemy(intensity);
+                for (Enemy e2 : enemies) e2.HarmEnemy(intensity);
                 break;
+            case DEFEND:
+                player.setDefense(intensity + player.getDefense());
+                break;
+            case PIERCING:
+                player.ChooseEnemy(enemies).HarmEnemyPiercing(intensity);
+                break;
+
+
         }
         player.SpendSecPoint(costType, cost);
     }

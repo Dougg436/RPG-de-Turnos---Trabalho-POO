@@ -17,5 +17,9 @@ public abstract class Item {
         return price;
     }
 
+    public int getPriceToSell() {
+        return Math.round(Math.max(price - (price/2), 1));
+    }
+
     public abstract String getType();
 }

@@ -40,9 +40,30 @@ public class Artifact extends Item{
             case INC_SEC:
                 if (sec.equals("mind")) player.setMaxMind(player.getMaxMind() + intensity);
                 else if (sec.equals("stamina")) player.setMaxStamina(player.getMaxStamina() + intensity);
+                break;
             case INC_SEC_GAIN:
                 if (sec.equals("mind")) player.setMindGain(player.getMindGain() + intensity);
                 else if (sec.equals("stamina")) player.setStaminaGain(player.getStaminaGain() + intensity);
+                break;
+        }
+    }
+
+    public void OnUnequip(Player player) {
+        switch (effectType){
+            case INC_HP:
+                player.setMaxHealthPoints(player.getMaxHealthPoints() - intensity);
+                break;
+            case INC_DEF:
+                player.setDefense(player.getDefense() - intensity);
+                break;
+            case INC_SEC:
+                if (sec.equals("mind")) player.setMaxMind(player.getMaxMind() - intensity);
+                else if (sec.equals("stamina")) player.setMaxStamina(player.getMaxStamina() - intensity);
+                break;
+            case INC_SEC_GAIN:
+                if (sec.equals("mind")) player.setMindGain(player.getMindGain() - intensity);
+                else if (sec.equals("stamina")) player.setStaminaGain(player.getStaminaGain() - intensity);
+                break;
         }
     }
 
