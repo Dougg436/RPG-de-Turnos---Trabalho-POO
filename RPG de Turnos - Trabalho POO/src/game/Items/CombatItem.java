@@ -11,6 +11,7 @@ public class CombatItem extends Item{
         GIVE_MIND,
         REMOVE_BLEED,
         REMOVE_POISON,
+        REMOVE_BURN,
         DEAL_DAMAGE
     }
 
@@ -53,6 +54,10 @@ public class CombatItem extends Item{
                 break;
             case REMOVE_POISON:
                 p.RemoveEffect(StatusEffect.Type.POISON);
+                p.HealPlayer(effectValue);
+                break;
+            case REMOVE_BURN:
+                p.RemoveEffect(StatusEffect.Type.BURN);
                 p.HealPlayer(effectValue);
         }
     }

@@ -39,4 +39,9 @@ public class Tengu extends Enemy{
                 System.out.println(this.getName() + " atacou " + target.getName() + " com Rasgar! [/" + harm3 + "/ de Dano]");
         }
     }
+
+    @Override
+    public Enemy CloneEnemy() {
+        return new Tengu();
+    }
 }

@@ -35,4 +35,9 @@ public class Oni extends Enemy{
                 System.out.println(this.getName() + " atacou " + target.getName() + " com Esmagar! (Ignora Armadura) [/" + this.getDamage() + "/ de Dano]");
         }
     }
+
+    @Override
+    public Enemy CloneEnemy() {
+        return new Oni();
+    }
 }

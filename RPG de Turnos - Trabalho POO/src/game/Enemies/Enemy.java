@@ -81,6 +81,8 @@ public abstract class Enemy {
         effects.removeAll(ended);
     }
 
+    public abstract Enemy CloneEnemy();
+
     public String getName() {
         return name;
     }

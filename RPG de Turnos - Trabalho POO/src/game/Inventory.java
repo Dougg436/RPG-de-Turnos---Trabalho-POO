@@ -33,7 +33,7 @@ public class Inventory {
                 "\nArma: " + weapon.getName() +
                 "\nArmadura: " + armor.getName() +
                 "\nArtefato: " + artifact.getName());
-
+        System.out.println("======/Itens/======");
         List<Item> keys = new ArrayList<>(inv.keySet());
         for (int i = 0; i < keys.size(); i++) {
             Item it = keys.get(i);
@@ -145,8 +145,9 @@ public class Inventory {
         money = Math.max(money - amount, 0);
     }
 
-    public void ReceiveMoney(int amount) {
+    public void ReceiveMoney(int amount, boolean quiet) {
         money += amount;
-        System.out.println("Recebeu +" + amount + "Ryos!");
+        if (quiet) return;
+        System.out.println("Recebeu +" + amount + " Ryos!");
     }
 }

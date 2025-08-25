@@ -36,4 +36,9 @@ public class Tsukumogami extends Enemy{
                 System.out.println(this.getName() + " assombrou " + target.getName() + "! [/-3/ de Mente]");
         }
     }
+
+    @Override
+    public Enemy CloneEnemy() {
+        return new Tsukumogami();
+    }
 }

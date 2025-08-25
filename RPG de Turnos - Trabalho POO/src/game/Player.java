@@ -6,6 +6,7 @@ import game.StatusEffect.StatusEffect;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Player {
@@ -21,17 +22,13 @@ public class Player {
     private int level;           // Nível
     private int XP;           // Honra (EXP)
     private int defense;         // Defesa
+    public int progress;
+    public int respect;
+    private static final Random random = new Random();
     List<StatusEffect> effects = new ArrayList<>();
     List<Skill> skills = new ArrayList<>();
     Inventory inventory = new Inventory();
     Scanner sc = new Scanner(System.in);
-
-    enum Location {
-        VILLAGE,
-        DUNGEON,
-    }
-
-    private Location location;
 
 
     public void ShowStats() {
@@ -242,7 +239,15 @@ public class Player {
     }
 
     public void AttackEnemy(Enemy target) {
-        target.HarmEnemy(getDamage());
+        int crit = random.nextInt(1, 21);
+        int dmg = random.nextInt(-2, 3);
+        if (crit!=20) {
+            target.HarmEnemy(getDamage()+dmg);
+        }
+        else {
+            target.HarmEnemy(getDamage()*2);
+            System.out.println("Crítico! (x2 de Dano)");
+        }
     }
 
     public void Sleep(int mili) {
@@ -261,7 +266,7 @@ public class Player {
     // <editor-fold desc="Get e Set">
     public void GameOver(){
         System.out.println("Game Over!");
-        location = Location.VILLAGE;
+
     }
 
     public String getName() {
@@ -365,6 +370,7 @@ public class Player {
             return inventory.weapon.getDamage() + inventory.artifact.getIntensity();
         return inventory.weapon.getDamage();
     }
+
     // </editor-fold>
 
 }
